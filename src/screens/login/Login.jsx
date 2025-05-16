@@ -65,6 +65,7 @@ function Login() {
         <>
             <form className="login-form" onSubmit={handleSubmit}>
                 <h2>SeenIt</h2>
+                <h3>Log In</h3>
                 <div className="form-group">
                     <label htmlFor="login">Login:</label>
                     <input type="text" id="login" name="login" value={login} onChange={(e) => { setLogin(e.target.value) }} />
@@ -77,6 +78,7 @@ function Login() {
                 </div>
                 <button type="submit" className="login-button">Se connecter</button>
                 <span className="debug_info">Faux login, ne pas mettre d'information importantes</span>
+            <button className="or_signin" onClick={navigate("/signin")}>Or Sign in...</button>
             </form>
         </>
     )
