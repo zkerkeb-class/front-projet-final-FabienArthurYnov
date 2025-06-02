@@ -7,7 +7,7 @@ function Logout() {
     
     useEffect( () => {
         sessionStorage.removeItem("loginToken");
-        navigate("/");
+        navigate("/login");
     }, [])
 
     return (

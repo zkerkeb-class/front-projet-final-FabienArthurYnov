@@ -65,7 +65,6 @@ function Login() {
                 </div>
                 <button type="submit" className="login-button">Se connecter</button>
                 {errorMsg && <span className="loginError">{errorMsg}</span>}
-                <span className="debug_info">Faux login, ne pas mettre d'information importantes</span>
             <button className="or_signin" onClick={() => navigate("/signin")}>Or Sign in...</button>
             </form>
         </>

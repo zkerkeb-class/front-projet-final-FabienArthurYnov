@@ -3,18 +3,29 @@ import Login from "./login/Login.jsx";
 import Logout from "./Logout/Logout.jsx";
 import SignIn from "./signin/SignIn.jsx";
 import Home from "./home/Home.jsx";
+import ProtectedRoute from "../security/Protected.jsx";
+import AnonRoute from "../security/Anon.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <nav>
-        <Link to="/Login">Login</Link> 
+        Navbar
       </nav>
       <Routes>
-        <Route path="/Login" element={<Login />} />
-        <Route path="/SignIn" element={<SignIn />} />
+        <Route path="/Login" element={
+          <AnonRoute>
+            <Login />
+          </AnonRoute>} />
+        <Route path="/SignIn" element={
+          <AnonRoute>
+            <SignIn />
+          </AnonRoute>} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
