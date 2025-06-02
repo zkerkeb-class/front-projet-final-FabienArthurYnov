@@ -5,8 +5,6 @@ import ShowCard from "../../component/ShowCard/ShowCard";
 import Navbar from "../../component/Navbar/Navbar"
 
 function Home() {
-    const navigate = useNavigate();
-
     // placeholder arrays to simulate data
     const currentlyWatching = Array(8).fill("Current Show");
     const watchlist = Array(6).fill("Watchlist Show");

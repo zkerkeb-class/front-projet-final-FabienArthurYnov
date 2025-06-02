@@ -39,6 +39,10 @@
   color: var(--blue);
 }
 
+.logout-btn:hover {
+    background-color: rgb(163, 0, 0);
+}
+
 
 @media (max-width: 600px) {
   .nav-btn {
