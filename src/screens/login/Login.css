@@ -50,6 +50,10 @@ cursor: pointer;
 background-color: rgb(66, 65, 182);
 }
 
+.loginError {
+    color: rgb(160, 0, 0);
+}
+
 .debug_info {
     color: grey;
     font-size: 10px;

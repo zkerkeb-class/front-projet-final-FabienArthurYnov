@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Login from "./login/Login.jsx";
 import Logout from "./Logout/Logout.jsx";
-import SignIn from "./signin/SignIn.jsx"
+import SignIn from "./signin/SignIn.jsx";
+import Home from "./home/Home.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );
