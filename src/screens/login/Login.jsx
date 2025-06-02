@@ -14,9 +14,6 @@ function Login() {
     const navigate = useNavigate();
     const loginToken = sessionStorage.getItem("loginToken");
 
-    const API_token = import.meta.env.VITE_APP_TMDB_API_TOKEN;
-    console.log(API_token);
-
     const hashedPassword = async (password) => {
         const saltRounds = 5;
         const hashed = await bcrypt.hash(password, saltRounds);
@@ -78,7 +75,7 @@ function Login() {
                 </div>
                 <button type="submit" className="login-button">Se connecter</button>
                 <span className="debug_info">Faux login, ne pas mettre d'information importantes</span>
-            <button className="or_signin" onClick={navigate("/signin")}>Or Sign in...</button>
+            <button className="or_signin" onClick={() => navigate("/signin")}>Or Sign in...</button>
             </form>
         </>
     )

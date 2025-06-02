@@ -18,6 +18,8 @@ function SignIn() {
     const [successMsg, setSuccessMsg] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const API_url = import.meta.env.VITE_SEENIT_API;
+
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
@@ -52,7 +54,7 @@ function SignIn() {
         };
 
         try {
-            const res = await fetch("http://localhost:5000/api/users", {
+            const res = await fetch(API_url + "/api/user", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -127,7 +129,7 @@ function SignIn() {
     
             {successMsg && <p className="successMsg">{successMsg}</p>}
 
-            <button className="or_login" onClick={navigate("/login")}>Or Log in...</button>
+            <button className="or_login" onClick={()=>navigate("/login")}>Or Log in...</button>
           </form>
         </>
       );
