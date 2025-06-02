@@ -1,6 +1,8 @@
 import React from "react";
 import "./Home.css";
 import { useNavigate } from "react-router";
+import ShowCard from "../../component/ShowCard/ShowCard";
+import Navbar from "../../component/Navbar/Navbar"
 
 function Home() {
     const navigate = useNavigate();
@@ -12,22 +14,23 @@ function Home() {
 
     return (
         <>
-            <nav className="navbar">
-                <div className="logo">SeenIt</div>
-                <input className="search-bar" type="search" placeholder="Search..." />
-                <div className="nav-links">
-                    <button className="nav-btn">Watchlist</button>
-                    <button className="nav-btn">Discover</button>
-                    <button className="nav-btn logout-btn" onClick={() => navigate("/logout")}>Logout</button>
-                </div>
-            </nav>
+            <Navbar>
+
+            </Navbar>
 
             <main className="main-content">
                 <section className="section">
                     <h2>Continue what you started</h2>
                     <div className="card-row">
                         {currentlyWatching.map((title, i) => (
-                            <div key={i} className="card">{title}</div>
+                            <ShowCard
+                                poster="https://image.tmdb.org/t/p/w500/your-poster.jpg"
+                                name={title}
+                                year="2023"
+                                season="S3"
+                                episode="E10"
+                                onClick={() => console.log("Card clicked!")}
+                            />
                         ))}
                     </div>
                 </section>

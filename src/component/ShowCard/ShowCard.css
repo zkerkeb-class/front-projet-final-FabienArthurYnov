@@ -1,0 +1,62 @@
+.card {
+  min-width: 150px;
+  height: 225px;
+  background-color: var(--light-grey);
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(58, 123, 213, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+  margin-left: 5px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(58, 123, 213, 0.8);
+}
+
+.card-info-top {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  border-radius: 4px;
+  align-self: flex-start;
+  max-width: 90%;
+}
+
+.card-name {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.card-year {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.card-info-bottom {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 4px;
+  align-self: flex-start;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .card {
+    min-width: 120px;
+    height: 180px;
+    font-size: 0.8rem;
+  }
+}
