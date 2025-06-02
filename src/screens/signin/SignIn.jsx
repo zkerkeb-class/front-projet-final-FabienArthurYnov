@@ -84,7 +84,7 @@ function SignIn() {
     return (
         <>
           <form className="signin-form" onSubmit={handleSubmit}>
-            <h2>SeenIt</h2>
+            <h2 className="logo">SeenIt</h2>
             <h3>Sign In</h3>
     
             <div className="form-group">

@@ -53,7 +53,7 @@ function Login() {
     return (
         <>
             <form className="login-form" onSubmit={handleSubmit}>
-                <h2>SeenIt</h2>
+                <h2 className="logo">SeenIt</h2>
                 <h3>Log In</h3>
                 <div className="form-group">
                     <label htmlFor="login">Login:</label>

@@ -1,9 +1,20 @@
+.logo {
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    user-select: none;
+    margin:0;
+}
+
 .signin-form {
     background-color: #ffffff;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 300px;
+    margin-left: 50%;
+    margin-top: 20px;
+    translate: -50%;
 }
 
 .signin-form h2 {
@@ -54,14 +65,6 @@
 .debug_info {
     color: grey;
     font-size: 10px;
-}
-
-.pokemon-logo {
-    width: 150px;
-    margin-bottom: 20px;
-    background-color: #333;
-    padding: 10%;
-    border-radius: 10px;
 }
 
 .signinError {
