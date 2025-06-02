@@ -9,9 +9,6 @@ import AnonRoute from "../security/Anon.jsx";
 function App() {
   return (
     <BrowserRouter>
-      <nav>
-        Navbar
-      </nav>
       <Routes>
         <Route path="/Login" element={
           <AnonRoute>
