@@ -13,6 +13,8 @@ const ShowPage = () => {
   const navigate = useNavigate();
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const API_url = import.meta.env.VITE_SEENIT_API;
+    const loginToken = sessionStorage.getItem("loginToken");
 
   useEffect(() => {
     const fetchShow = async () => {
@@ -52,13 +54,61 @@ const ShowPage = () => {
       }
     };
 
+    async function checkWatchlist() {
+      try {
+        const res = await fetch(API_url + `/api/watchlist/check?showId=${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${loginToken}`,
+          },
+        });
+        const data = await res.json();
+        setInWatchlist(data.inWatchlist);
+      } catch (error) {
+        console.error("Failed to check watchlist status", error);
+      }
+    }
+
     if (id && type) {
       fetchShow();
+      checkWatchlist();
     }
+
+
   }, [id, type, navigate]);
 
-  const toggleWatchlist = () => {
-    setInWatchlist((prev) => !prev);
+  const toggleWatchlist = async () => {
+    const watchlistData = {
+      showId: results.id,
+      name: results.name || results.title,
+      year: (results.first_air_date || results.release_date || "").slice(0, 4),
+      type: type,
+      poster_link: results.poster_path,
+      episode: 0,
+      season: 0,
+    };
+
+    try {
+      const res = await fetch(API_url + "/api/watchlistToggle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${loginToken}`,
+        },
+        body: JSON.stringify(watchlistData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Erreur:", data.error || data.message);
+      } else {
+        console.log("Succès:", data.message);
+        setInWatchlist((prev) => !prev);
+      }
+    } catch (err) {
+      console.error("Erreur réseau:", err);
+    }
   };
 
   const changeEpisode = (amount) => {
