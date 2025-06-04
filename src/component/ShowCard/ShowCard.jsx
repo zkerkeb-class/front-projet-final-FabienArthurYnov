@@ -7,6 +7,7 @@ const ShowCard = ({
   year = "2025",
   season = "S1",
   episode = "E1",
+  type = "movie",
   onClick,
 }) => {
   return (
@@ -19,7 +20,7 @@ const ShowCard = ({
         <h4 className="card-name">{name}</h4>
         <span className="card-year">{year}</span>
       </div>
-      {episode && (<>
+      {type == "tv" && (<>
         <div className="card-info-bottom">
           <span className="card-episode">{episode}</span> |{" "}
           <span className="card-season">{season}</span>

@@ -53,6 +53,7 @@ function Home() {
                                 poster={`https://image.tmdb.org/t/p/w500${item.show.poster_link}`}
                                 name={item.show.name}
                                 year={item.show.year}
+                                type={item.show.type}
                                 season={item.show.type === "tv" ? `S${item.season}` : 1}
                                 episode={item.show.type === "tv" ? `E${item.episode}` : 1}
                                 onClick={() =>

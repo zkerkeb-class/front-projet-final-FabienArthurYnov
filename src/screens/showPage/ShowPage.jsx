@@ -74,7 +74,7 @@ const ShowPage = () => {
           setEpisodeProgress(parseInt(data.episode), 10);
           setSeasonProgress(parseInt(data.season), 10);
         }
-        console.log(seasonProgress);
+        console.log(watchList);
       } catch (error) {
         console.error("Failed to check watchlist status", error);
       }
@@ -89,11 +89,12 @@ const ShowPage = () => {
   }, [id, type, navigate]);
 
   const toggleWatchlist = async () => {
-    setwatchList((prev) => !prev);
-    await updateShowUsersList();
+    const newWatchList = !watchList;
+    setwatchList(newWatchList);
+    await updateShowUsersList(episodeProgress, seasonProgress, newWatchList);
   }
 
-  const updateShowUsersList = async () => {
+  const updateShowUsersList = async (newEpisode = episodeProgress, newSeason = seasonProgress, newWatchList = watchList) => {
     const updateShowUsersList = {
       show: {
         showId: results.id,
@@ -102,9 +103,9 @@ const ShowPage = () => {
         type: type,
         poster_link: results.poster_path,
       },
-      episode: episodeProgress,
-      season: seasonProgress,
-      watchList: watchList,
+      episode: newEpisode,
+      season: newSeason,
+      watchList: newWatchList,
     };
 
     try {
@@ -130,13 +131,15 @@ const ShowPage = () => {
   };
 
   const changeSeason = async (amount) => {
-    setSeasonProgress((prev) => Math.min(Math.max(1, prev + amount), results.number_of_seasons));
-    setEpisodeProgress(1);
-    await updateShowUsersList();
+    const newSeason = Math.min(Math.max(1, seasonProgress + amount), results.number_of_seasons)
+    const newEpisode = 1;
+    setSeasonProgress(newSeason);
+    setEpisodeProgress(newEpisode);
+    await updateShowUsersList(newEpisode, newSeason, watchList);
   };
 
   const changeEpisode = async (amount) => {
-    let newEpisode = episodeProgress + amount;
+    var newEpisode = episodeProgress + amount;
 
     if (newEpisode < 1) {
       if (seasonProgress - 1 > 0) {
@@ -147,11 +150,11 @@ const ShowPage = () => {
       }
     } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
       changeSeason(1);
-      newEpisode= 1
+      newEpisode= 1;
     } else {
     }
     setEpisodeProgress(newEpisode);
-    await updateShowUsersList();
+    await updateShowUsersList(newEpisode, seasonProgress, watchList);
   };
 
 
