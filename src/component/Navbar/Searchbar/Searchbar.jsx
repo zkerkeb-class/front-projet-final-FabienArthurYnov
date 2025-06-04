@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import "./Searchbar.css";
 
 const tmdbApiToken = import.meta.env.VITE_APP_TMDB_API_TOKEN;
@@ -8,6 +9,7 @@ const SearchBar = () => {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const debounceTimeout = useRef(null);
+    const navigate = useNavigate();
 
     const fetchResults = async (searchTerm) => {
         setLoading(true);
@@ -41,7 +43,7 @@ const SearchBar = () => {
                     const title = item.name || item.title || "No title";
                     const dateStr = item.first_air_date || item.release_date || "";
                     const year = dateStr ? new Date(dateStr).getFullYear() : "----";
-                    return { id: item.id, title, year };
+                    return { id: item.id, title, year, type: item.media_type };
                 });
 
             setResults(normalized);
@@ -81,8 +83,11 @@ const SearchBar = () => {
 
             {!loading && results.length > 0 && (
                 <ul className="search-results">
-                    {results.map(({ id, title, year }) => (
-                        <li key={id}>
+                    {results.map(({ id, title, year, type }) => (
+                        <li key={id} onClick={() => {
+                            setQuery("");
+                            navigate(`/show?id=${id}&type=${type}`);
+                            }}>
                             {title} [{year}]
                         </li>
                     ))}

@@ -1,0 +1,97 @@
+.show-page {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: var(--light-grey);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(58, 123, 213, 0.3);
+  color: white;
+  max-width: 900px;
+  margin: 2rem auto;
+  font-family: sans-serif;
+}
+
+.poster img {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(58, 123, 213, 0.4);
+}
+
+.details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.details h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.release-date,
+.overview {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.providers ul {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.providers li {
+  background-color: #3a7bd5;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: auto;
+}
+
+.watchlist-btn {
+  padding: 0.5rem 1rem;
+  background-color: #3a7bd5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.watchlist-btn:hover {
+  background-color: #265fa2;
+}
+
+.episode-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+
+.episode-progress button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: var(--blue);
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.episode-progress button:hover {
+  background-color: #ddd;
+}

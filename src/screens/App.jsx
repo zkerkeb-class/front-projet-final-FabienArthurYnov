@@ -5,6 +5,7 @@ import SignIn from "./signin/SignIn.jsx";
 import Home from "./home/Home.jsx";
 import ProtectedRoute from "../security/Protected.jsx";
 import AnonRoute from "../security/Anon.jsx";
+import ShowPage from "./showPage/ShowPage.jsx";
 
 function App() {
   return (
@@ -23,6 +24,10 @@ function App() {
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>} />
+          <Route path="/show" element={
+            <ProtectedRoute>
+              <ShowPage/>
+            </ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

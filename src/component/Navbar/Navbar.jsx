@@ -8,7 +8,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     return (
         <nav className="navbar">
-            <div className="logo">SeenIt</div>
+            <div className="logo" onClick={() => navigate("/")}>SeenIt</div>
             <SearchBar></SearchBar>
             <div className="nav-links">
                 <button className="nav-btn">Watchlist</button>

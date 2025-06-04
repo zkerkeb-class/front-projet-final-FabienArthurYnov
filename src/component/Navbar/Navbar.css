@@ -17,6 +17,9 @@
   letter-spacing: 2px;
   user-select: none;
 }
+.logo:hover {
+  cursor: pointer;
+}
 
 .nav-links {
   display: flex;
