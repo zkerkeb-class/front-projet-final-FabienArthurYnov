@@ -1,5 +1,6 @@
 .card {
   min-width: 150px;
+  max-width: 150px;
   height: 225px;
   background-color: var(--light-grey);
   background-size: cover;

@@ -5,7 +5,7 @@ import Navbar from "../../component/Navbar/Navbar";
 
 const ShowPage = () => {
   const [inWatchlist, setInWatchlist] = useState(false);
-  const [episodeProgress, setEpisodeProgress] = useState(0);
+  const [episodeProgress, setEpisodeProgress] = useState(1);
   const [providers, setProviders] = useState([]);
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -14,7 +14,8 @@ const ShowPage = () => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const API_url = import.meta.env.VITE_SEENIT_API;
-    const loginToken = sessionStorage.getItem("loginToken");
+  const loginToken = sessionStorage.getItem("loginToken");
+  const [seasonProgress, setSeasonProgress] = useState(3);
 
   useEffect(() => {
     const fetchShow = async () => {
@@ -111,9 +112,28 @@ const ShowPage = () => {
     }
   };
 
-  const changeEpisode = (amount) => {
-    setEpisodeProgress((prev) => Math.max(0, prev + amount));
+  const changeSeason = (amount) => {
+    setSeasonProgress((prev) => Math.min(Math.max(1, prev + amount), results.number_of_seasons));
+    setEpisodeProgress(1);
   };
+
+  const changeEpisode = (amount) => {
+    let newEpisode = episodeProgress + amount;
+    let newEpisodeFinal = newEpisode;
+
+    if (newEpisode < 1) {
+      if (seasonProgress - 1 > 0) {
+        changeSeason(-1);
+        newEpisodeFinal = (results.seasons[seasonProgress - 1].episode_count);
+      }
+    } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
+      changeSeason(1);
+      newEpisodeFinal = 1
+    } else {
+    }
+    setEpisodeProgress(newEpisodeFinal);
+  };
+
 
   return (
     <>
@@ -131,7 +151,13 @@ const ShowPage = () => {
             <div className="details">
               <h1>{results.name || results.title}</h1>
               <p className="release-date">
-                Release Date: {results.first_air_date || results.release_date || "Unknown"}
+                Release Date: {results.first_air_date || results.release_date || "Unknown"} {type == "tv" && (<>, Last Air Date : {results.last_air_date}</>)}
+              </p>
+              <p className="country">
+                Country: {results.origin_country || "Unknown"}
+              </p>
+              <p className="status">
+                Status: {results.status || "Unknown"}
               </p>
               <p className="overview"> {results.overview}</p>
 
@@ -145,17 +171,19 @@ const ShowPage = () => {
               </div>
 
               <div className="actions">
-                <button onClick={toggleWatchlist} className="watchlist-btn">
-                  {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
-                </button>
-
                 {type == "tv" && (<>
+                  <div className="season-progress">
+                    <span>{results.seasons[seasonProgress].name}</span>
+                  </div>
                   <div className="episode-progress">
-                    <span>Episode: {episodeProgress}</span>
+                    <span>Episode: {episodeProgress} / {results.seasons[seasonProgress].episode_count}</span>
                     <button onClick={() => changeEpisode(-1)}>-</button>
                     <button onClick={() => changeEpisode(1)}>+</button>
                   </div>
                 </>)}
+                <button onClick={toggleWatchlist} className="watchlist-btn">
+                  {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+                </button>
               </div>
             </div>
           </>

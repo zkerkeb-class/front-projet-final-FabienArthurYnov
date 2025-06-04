@@ -19,10 +19,12 @@ const ShowCard = ({
         <h4 className="card-name">{name}</h4>
         <span className="card-year">{year}</span>
       </div>
-      <div className="card-info-bottom">
-        <span className="card-episode">{episode}</span> |{" "}
-        <span className="card-season">{season}</span>
-      </div>
+      {episode && (<>
+        <div className="card-info-bottom">
+          <span className="card-episode">{episode}</span> |{" "}
+          <span className="card-season">{season}</span>
+        </div>
+      </>)}
     </div>
   );
 };
