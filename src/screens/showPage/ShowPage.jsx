@@ -4,7 +4,7 @@ import "./ShowPage.css";
 import Navbar from "../../component/Navbar/Navbar";
 
 const ShowPage = () => {
-  const [inWatchlist, setInWatchlist] = useState(false);
+  const [watchList, setwatchList] = useState(false);
   const [episodeProgress, setEpisodeProgress] = useState(1);
   const [providers, setProviders] = useState([]);
   const [searchParams] = useSearchParams();
@@ -15,7 +15,7 @@ const ShowPage = () => {
   const [loading, setLoading] = useState(false);
   const API_url = import.meta.env.VITE_SEENIT_API;
   const loginToken = sessionStorage.getItem("loginToken");
-  const [seasonProgress, setSeasonProgress] = useState(3);
+  const [seasonProgress, setSeasonProgress] = useState(1);
 
   useEffect(() => {
     const fetchShow = async () => {
@@ -57,15 +57,24 @@ const ShowPage = () => {
 
     async function checkWatchlist() {
       try {
-        const res = await fetch(API_url + `/api/watchlist/check?showId=${id}`, {
+        const res = await fetch(API_url + `/api/showuserlist/check?showId=${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${loginToken}`,
           },
         });
         const data = await res.json();
-        console.log(data.watchList);
-        setInWatchlist(data.watchList);
+        if (data == null) {
+          // default parameters
+          setwatchList(false);
+          setEpisodeProgress(1);
+          setSeasonProgress(1);
+        } else {
+          setwatchList(data.watchList);
+          setEpisodeProgress(parseInt(data.episode), 10);
+          setSeasonProgress(parseInt(data.season), 10);
+        }
+        console.log(seasonProgress);
       } catch (error) {
         console.error("Failed to check watchlist status", error);
       }
@@ -74,13 +83,18 @@ const ShowPage = () => {
     if (id && type) {
       fetchShow();
       checkWatchlist();
+    } else {
+      navigate("/");
     }
-
-
   }, [id, type, navigate]);
 
   const toggleWatchlist = async () => {
-    const watchlistData = {
+    setwatchList((prev) => !prev);
+    await updateShowUsersList();
+  }
+
+  const updateShowUsersList = async () => {
+    const updateShowUsersList = {
       show: {
         showId: results.id,
         name: results.name || results.title,
@@ -90,17 +104,17 @@ const ShowPage = () => {
       },
       episode: episodeProgress,
       season: seasonProgress,
-      watchList: !inWatchlist,
+      watchList: watchList,
     };
 
     try {
-      const res = await fetch(API_url + "/api/watchlist/toggle", {
+      const res = await fetch(API_url + "/api/showuserlist/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${loginToken}`,
         },
-        body: JSON.stringify(watchlistData),
+        body: JSON.stringify(updateShowUsersList),
       });
 
       const data = await res.json();
@@ -109,19 +123,19 @@ const ShowPage = () => {
         console.error("Erreur:", data.error || data.message);
       } else {
         console.log("Succès:", data.message);
-        setInWatchlist((prev) => !prev);
       }
     } catch (err) {
       console.error("Erreur réseau:", err);
     }
   };
 
-  const changeSeason = (amount) => {
+  const changeSeason = async (amount) => {
     setSeasonProgress((prev) => Math.min(Math.max(1, prev + amount), results.number_of_seasons));
     setEpisodeProgress(1);
+    await updateShowUsersList();
   };
 
-  const changeEpisode = (amount) => {
+  const changeEpisode = async (amount) => {
     let newEpisode = episodeProgress + amount;
 
     if (newEpisode < 1) {
@@ -137,6 +151,7 @@ const ShowPage = () => {
     } else {
     }
     setEpisodeProgress(newEpisode);
+    await updateShowUsersList();
   };
 
 
@@ -187,7 +202,7 @@ const ShowPage = () => {
                   </div>
                 </>)}
                 <button onClick={toggleWatchlist} className="watchlist-btn">
-                  {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+                  {watchList ? "Remove from Watchlist" : "Add to Watchlist"}
                 </button>
               </div>
             </div>
