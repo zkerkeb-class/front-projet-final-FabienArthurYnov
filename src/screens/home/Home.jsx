@@ -7,7 +7,7 @@ import Navbar from "../../component/Navbar/Navbar"
 function Home() {
     // placeholder arrays to simulate data
     const [watchlist, setWatchlist] = useState();
-    const currentlyWatching = Array(8).fill("Current Show");
+    const [startedList, setStartedList] = useState();
     const trending = Array(10).fill("Coming soon");
     const navigate = useNavigate();
 
@@ -31,8 +31,29 @@ function Home() {
             } catch (err) {
                 console.error("Watchlist fetch error:", err);
             }
-        };  
+        }; 
+
+        const fetchStartedList = async () => {
+            const sessionToken = sessionStorage.getItem("loginToken");
+
+            try {
+                const res = await fetch(import.meta.env.VITE_SEENIT_API + "/api/startedShows", {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + sessionToken,
+                    },
+                });
+
+                if (!res.ok) throw new Error("Failed to fetch startedShows");
+
+                const data = await res.json();
+                setStartedList(data);
+            } catch (err) {
+                console.error("StartedShows fetch error:", err);
+            }
+        }
         fetchWatchlist();
+        fetchStartedList();
     })
 
 
@@ -68,15 +89,18 @@ function Home() {
                 <section className="section">
                     <h2>Continue what you started</h2>
                     <div className="card-row">
-                        {currentlyWatching.map((title, i) => (
+                        {startedList && startedList.map((item, i) => (
                             <ShowCard
-                                key={i}
-                                poster="https://image.tmdb.org/t/p/w500/your-poster.jpg"
-                                name={title}
-                                year="2023"
-                                season="S3"
-                                episode="E10"
-                                onClick={() => console.log("Card clicked!")}
+                                key={item._id}
+                                poster={`https://image.tmdb.org/t/p/w500${item.show.poster_link}`}
+                                name={item.show.name}
+                                year={item.show.year}
+                                type={item.show.type}
+                                season={item.show.type === "tv" ? `S${item.season}` : 1}
+                                episode={item.show.type === "tv" ? `E${item.episode}` : 1}
+                                onClick={() =>
+                                    navigate(`/show?id=${item.show.showId}&type=${item.show.type}`)
+                                }
                             />
                         ))}
                     </div>
