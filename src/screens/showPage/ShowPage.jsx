@@ -119,19 +119,20 @@ const ShowPage = () => {
 
   const changeEpisode = (amount) => {
     let newEpisode = episodeProgress + amount;
-    let newEpisodeFinal = newEpisode;
 
     if (newEpisode < 1) {
       if (seasonProgress - 1 > 0) {
         changeSeason(-1);
-        newEpisodeFinal = (results.seasons[seasonProgress - 1].episode_count);
+        newEpisode = (results.seasons[seasonProgress - 1].episode_count);
+      } else {
+        newEpisode = episodeProgress;
       }
     } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
       changeSeason(1);
-      newEpisodeFinal = 1
+      newEpisode= 1
     } else {
     }
-    setEpisodeProgress(newEpisodeFinal);
+    setEpisodeProgress(newEpisode);
   };
 
 
