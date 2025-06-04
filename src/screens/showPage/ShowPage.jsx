@@ -64,7 +64,8 @@ const ShowPage = () => {
           },
         });
         const data = await res.json();
-        setInWatchlist(data.inWatchlist);
+        console.log(data.watchList);
+        setInWatchlist(data.watchList);
       } catch (error) {
         console.error("Failed to check watchlist status", error);
       }
@@ -80,17 +81,20 @@ const ShowPage = () => {
 
   const toggleWatchlist = async () => {
     const watchlistData = {
-      showId: results.id,
-      name: results.name || results.title,
-      year: (results.first_air_date || results.release_date || "").slice(0, 4),
-      type: type,
-      poster_link: results.poster_path,
-      episode: 0,
-      season: 0,
+      show: {
+        showId: results.id,
+        name: results.name || results.title,
+        year: (results.first_air_date || results.release_date || "").slice(0, 4),
+        type: type,
+        poster_link: results.poster_path,
+      },
+      episode: episodeProgress,
+      season: seasonProgress,
+      watchList: !inWatchlist,
     };
 
     try {
-      const res = await fetch(API_url + "/api/watchlistToggle", {
+      const res = await fetch(API_url + "/api/watchlist/toggle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -27,7 +27,7 @@ function Home() {
                 if (!res.ok) throw new Error("Failed to fetch watchlist");
 
                 const data = await res.json();
-                setWatchlist(data); // <- your useState or similar
+                setWatchlist(data);
             } catch (err) {
                 console.error("Watchlist fetch error:", err);
             }
@@ -50,13 +50,13 @@ function Home() {
                         {watchlist && watchlist.map((item, i) => (
                             <ShowCard
                                 key={item._id}
-                                poster={`https://image.tmdb.org/t/p/w500${item.poster_link}`}
-                                name={item.name}
-                                year={item.year}
-                                season={item.type === "tv" ? `S${item.season}` : null}
-                                episode={item.type === "tv" ? `E${item.episode}` : null}
+                                poster={`https://image.tmdb.org/t/p/w500${item.show.poster_link}`}
+                                name={item.show.name}
+                                year={item.show.year}
+                                season={item.show.type === "tv" ? `S${item.season}` : 1}
+                                episode={item.show.type === "tv" ? `E${item.episode}` : 1}
                                 onClick={() =>
-                                    navigate(`/show?id=${item.showId}&type=${item.type}`)
+                                    navigate(`/show?id=${item.show.showId}&type=${item.show.type}`)
                                 }
                             />
                         ))}
@@ -69,6 +69,7 @@ function Home() {
                     <div className="card-row">
                         {currentlyWatching.map((title, i) => (
                             <ShowCard
+                                key={i}
                                 poster="https://image.tmdb.org/t/p/w500/your-poster.jpg"
                                 name={title}
                                 year="2023"
