@@ -16,6 +16,7 @@ const ShowPage = () => {
   const API_url = import.meta.env.VITE_SEENIT_API;
   const loginToken = sessionStorage.getItem("loginToken");
   const [seasonProgress, setSeasonProgress] = useState(1);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     const fetchShow = async () => {
@@ -55,7 +56,7 @@ const ShowPage = () => {
       }
     };
 
-    async function checkWatchlist() {
+    async function checkProgress() {
       try {
         const res = await fetch(API_url + `/api/showuserlist/check?showId=${id}`, {
           method: "GET",
@@ -69,12 +70,13 @@ const ShowPage = () => {
           setwatchList(false);
           setEpisodeProgress(1);
           setSeasonProgress(1);
+          setDone(false);
         } else {
           setwatchList(data.watchList);
           setEpisodeProgress(parseInt(data.episode), 10);
           setSeasonProgress(parseInt(data.season), 10);
+          setDone(data.done);
         }
-        console.log(watchList);
       } catch (error) {
         console.error("Failed to check watchlist status", error);
       }
@@ -82,7 +84,7 @@ const ShowPage = () => {
 
     if (id && type) {
       fetchShow();
-      checkWatchlist();
+      checkProgress();
     } else {
       navigate("/");
     }
@@ -94,7 +96,7 @@ const ShowPage = () => {
     await updateShowUsersList(episodeProgress, seasonProgress, newWatchList);
   }
 
-  const updateShowUsersList = async (newEpisode = episodeProgress, newSeason = seasonProgress, newWatchList = watchList) => {
+  const updateShowUsersList = async (newEpisode = episodeProgress, newSeason = seasonProgress, newWatchList = watchList, newDone = done) => {
     const updateShowUsersList = {
       show: {
         showId: results.id,
@@ -106,6 +108,7 @@ const ShowPage = () => {
       episode: newEpisode,
       season: newSeason,
       watchList: newWatchList,
+      done: newDone,
     };
 
     try {
@@ -140,8 +143,12 @@ const ShowPage = () => {
 
   const changeEpisode = async (amount) => {
     var newEpisode = episodeProgress + amount;
+    var newDone = false
     if (!results.seasons[seasonProgress]) { // only one season / no season
       newEpisode = Math.min(Math.max(1, episodeProgress + amount), results.number_of_episodes)
+      if (newEpisode == results.number_of_episodes) {
+        newDone = true;
+      }
     } else { // multiple seasons
       if (newEpisode < 1) {
         if (seasonProgress - 1 > 0) {
@@ -156,10 +163,14 @@ const ShowPage = () => {
       } else {
         newEpisode = episodeProgress + amount;
       }
+      if (seasonProgress == results.number_of_seasons && newEpisode == results.seasons[seasonProgress].episode_count) {
+        newDone = true;
+      }
     }
 
+    setDone(newDone);
     setEpisodeProgress(newEpisode);
-    await updateShowUsersList(newEpisode, seasonProgress, watchList);
+    await updateShowUsersList(newEpisode, seasonProgress, watchList, newDone);
   };
 
 
@@ -214,6 +225,11 @@ const ShowPage = () => {
                 <button onClick={toggleWatchlist} className="watchlist-btn">
                   {watchList ? "Remove from Watchlist" : "Add to Watchlist"}
                 </button>
+                {done && (<>
+                <div className="done">
+                  Watched it all ! 
+                </div>
+                </>)}
               </div>
             </div>
           </>

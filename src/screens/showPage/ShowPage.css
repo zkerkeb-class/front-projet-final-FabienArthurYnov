@@ -93,3 +93,9 @@
 .episode-progress button:hover {
   background-color: #265fa2;
 }
+
+.done {
+  background-color: rgb(26, 119, 26);
+  padding: 0.25rem;
+  border-radius: 5px;
+}
