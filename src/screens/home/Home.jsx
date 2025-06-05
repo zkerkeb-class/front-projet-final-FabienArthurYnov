@@ -8,7 +8,7 @@ function Home() {
     // placeholder arrays to simulate data
     const [watchlist, setWatchlist] = useState();
     const [startedList, setStartedList] = useState();
-    const trending = Array(10).fill("Coming soon");
+    const [discoverList, setDiscoverList] = useState();
     const navigate = useNavigate();
 
 
@@ -31,7 +31,7 @@ function Home() {
             } catch (err) {
                 console.error("Watchlist fetch error:", err);
             }
-        }; 
+        };
 
         const fetchStartedList = async () => {
             const sessionToken = sessionStorage.getItem("loginToken");
@@ -52,8 +52,42 @@ function Home() {
                 console.error("StartedShows fetch error:", err);
             }
         }
+
+        const fetchDiscoverList = async () => {
+            try {
+                const today = new Date();
+                const currentYear = today.getFullYear();
+
+                // One month ago
+                const oneMonthAgo = new Date();
+                oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+                const oneMonthAgoStr = oneMonthAgo.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+
+
+                const res = await fetch(
+                    `https://api.themoviedb.org/3/discover/tv?air_date.gte=${oneMonthAgoStr}&first_air_date_year=${currentYear}&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc`,
+                    {
+                        method: "GET",
+                        headers: {
+                            Authorization: "Bearer " + import.meta.env.VITE_APP_TMDB_API_TOKEN,
+                            Accept: "application/json",
+                        },
+                    }
+                );
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                setDiscoverList(data.results);
+            } catch (error) {
+                console.error("Error fetching TV shows:", error);
+            }
+        }
         fetchWatchlist();
         fetchStartedList();
+        fetchDiscoverList();
     })
 
 
@@ -68,6 +102,9 @@ function Home() {
                 <section className="section">
                     <h2>Your Watchlist</h2>
                     <div className="card-row">
+                        {!watchlist || watchlist.length == 0 && (<>
+                        <p>Nothing to watch ! Look at Discover, or start searching for movies or tv shows !</p>
+                        </>)}
                         {watchlist && watchlist.map((item, i) => (
                             <ShowCard
                                 key={item._id}
@@ -89,6 +126,9 @@ function Home() {
                 <section className="section">
                     <h2>Continue what you started</h2>
                     <div className="card-row">
+                        {!startedList || startedList.length == 0 && (<>
+                        <p>You have no show started.</p>
+                        </>)}
                         {startedList && startedList.map((item, i) => (
                             <ShowCard
                                 key={item._id}
@@ -110,8 +150,16 @@ function Home() {
                 <section className="section">
                     <h2>Discover What's Trending</h2>
                     <div className="card-row">
-                        {trending.map((title, i) => (
-                            <div key={i} className="card">{title}</div>
+                        {discoverList && discoverList.map((item, i) => (
+                            <ShowCard
+                                key={item.id}
+                                poster={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                                name={item.name}
+                                year={item.first_air_date}
+                                onClick={() =>
+                                    navigate(`/show?id=${item.id}&type=tv`)
+                                }
+                            />
                         ))}
                     </div>
                 </section>

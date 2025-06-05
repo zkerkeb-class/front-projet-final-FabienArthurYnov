@@ -140,19 +140,24 @@ const ShowPage = () => {
 
   const changeEpisode = async (amount) => {
     var newEpisode = episodeProgress + amount;
-
-    if (newEpisode < 1) {
-      if (seasonProgress - 1 > 0) {
-        changeSeason(-1);
-        newEpisode = (results.seasons[seasonProgress - 1].episode_count);
+    if (!results.seasons[seasonProgress]) { // only one season / no season
+      newEpisode = Math.min(Math.max(1, episodeProgress + amount), results.number_of_episodes)
+    } else { // multiple seasons
+      if (newEpisode < 1) {
+        if (seasonProgress - 1 > 0) {
+          changeSeason(-1);
+          newEpisode = (results.seasons[seasonProgress - 1].episode_count);
+        } else {
+          newEpisode = episodeProgress;
+        }
+      } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
+        changeSeason(1);
+        newEpisode = 1;
       } else {
-        newEpisode = episodeProgress;
+        newEpisode = episodeProgress + amount;
       }
-    } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
-      changeSeason(1);
-      newEpisode= 1;
-    } else {
     }
+
     setEpisodeProgress(newEpisode);
     await updateShowUsersList(newEpisode, seasonProgress, watchList);
   };
@@ -195,11 +200,13 @@ const ShowPage = () => {
 
               <div className="actions">
                 {type == "tv" && (<>
-                  <div className="season-progress">
-                    <span>{results.seasons[seasonProgress].name}</span>
-                  </div>
+                  {results.seasons[seasonProgress] && (<>
+                    <div className="season-progress">
+                      <span>{results.seasons[seasonProgress].name}</span>
+                    </div>
+                  </>)}
                   <div className="episode-progress">
-                    <span>Episode: {episodeProgress} / {results.seasons[seasonProgress].episode_count}</span>
+                    <span>Episode: {episodeProgress} / {results.seasons[seasonProgress] && (<>{results.seasons[seasonProgress].episode_count}</>) || <>{results.number_of_episodes}</>}</span>
                     <button onClick={() => changeEpisode(-1)}>-</button>
                     <button onClick={() => changeEpisode(1)}>+</button>
                   </div>
