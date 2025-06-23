@@ -12,7 +12,7 @@ const Navbar = () => {
             <SearchBar></SearchBar>
             <div className="nav-links">
                 <button className="nav-btn">Watchlist</button>
-                <button className="nav-btn">Discover</button>
+                <button className="nav-btn" onClick={() => navigate("/watched")}>Watched</button>
                 <button className="nav-btn logout-btn" onClick={() => navigate("/logout")}>Logout</button>
             </div>
         </nav>

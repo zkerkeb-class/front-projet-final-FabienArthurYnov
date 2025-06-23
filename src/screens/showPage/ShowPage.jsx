@@ -158,8 +158,7 @@ const ShowPage = () => {
           newEpisode = episodeProgress;
         }
       } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
-        changeSeason(1);
-        newEpisode = 1;
+        newEpisode = episodeProgress;
       } else {
         newEpisode = episodeProgress + amount;
       }
