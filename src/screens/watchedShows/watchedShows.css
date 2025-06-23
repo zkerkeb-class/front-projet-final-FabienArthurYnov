@@ -34,8 +34,8 @@ body, html, #root {
   font-weight: 700;
 }
 
-/* Card rows horizontal scroll */
-.card-row {
+
+.card-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;

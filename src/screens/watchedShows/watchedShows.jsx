@@ -45,7 +45,7 @@ function watchedShows() {
 
                 <section className="section">
                     <h2>Your Watchlist</h2>
-                    <div className="card-row">
+                    <div className="card-grid">
                         {!watchedList || watchedList.length == 0 && (<>
                         <p>Nothing watched yet ! Look at Discover, or continue what you started !</p>
                         </>)}

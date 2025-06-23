@@ -72,6 +72,7 @@ const ShowPage = () => {
           setSeasonProgress(1);
           setDone(false);
         } else {
+          console.log(data.done);
           setwatchList(data.watchList);
           setEpisodeProgress(parseInt(data.episode), 10);
           setSeasonProgress(parseInt(data.season), 10);
@@ -172,6 +173,12 @@ const ShowPage = () => {
     await updateShowUsersList(newEpisode, seasonProgress, watchList, newDone);
   };
 
+  const toggleDone = async () => {
+    const newDone = !done;
+    setDone(newDone);
+    await updateShowUsersList(episodeProgress, seasonProgress, watchList, newDone);
+  }
+
 
   return (
     <>
@@ -220,15 +227,31 @@ const ShowPage = () => {
                     <button onClick={() => changeEpisode(-1)}>-</button>
                     <button onClick={() => changeEpisode(1)}>+</button>
                   </div>
+
+                  {done && (<>
+                    <div className="done">
+                      Watched it all !
+                    </div>
+                  </>)}
                 </>)}
+
+                {type == "movie" && (<>
+                  {done && (
+                    <button className="done" onClick={() => toggleDone()}>
+                    Watched
+                    </button>
+                  )}
+                  {!done && (
+                    <button onClick={() => toggleDone()}>
+                    Not Watched
+                    </button>
+                  )}
+                </>)}
+
                 <button onClick={toggleWatchlist} className="watchlist-btn">
                   {watchList ? "Remove from Watchlist" : "Add to Watchlist"}
                 </button>
-                {done && (<>
-                <div className="done">
-                  Watched it all ! 
-                </div>
-                </>)}
+                
               </div>
             </div>
           </>
