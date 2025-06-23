@@ -206,15 +206,6 @@ const ShowPage = () => {
               </p>
               <p className="overview"> {results.overview}</p>
 
-              <div className="providers">
-                <strong>Available on:</strong>
-                <ul>
-                  {providers.map((provider, idx) => (
-                    <li key={idx}>{provider}</li>
-                  ))}
-                </ul>
-              </div>
-
               <div className="actions">
                 {type == "tv" && (<>
                   {results.seasons[seasonProgress] && (<>

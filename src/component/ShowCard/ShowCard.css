@@ -6,7 +6,7 @@
   background-size: cover;
   background-position: center;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(58, 123, 213, 0.5);
+  box-shadow: 0 4px 8px var(--dark-blue);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,7 +24,7 @@
 
 .card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(58, 123, 213, 0.8);
+  box-shadow: 0 8px 16px var(--dark-blue);
 }
 
 .card-info-top {

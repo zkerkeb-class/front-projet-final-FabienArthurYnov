@@ -13,10 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
   /* Color scheme */
   --blue: #3a7bd5;
+  --dark-blue: #161e6d;
   --dark-grey: #121212;
   --light-grey: #2a2a2a;
   --text-light: #eee;
   --text-muted: #aaa;
+  --red: rgb(136, 6, 6);
 
 }
 
