@@ -17,6 +17,8 @@ const ShowPage = () => {
   const loginToken = sessionStorage.getItem("loginToken");
   const [seasonProgress, setSeasonProgress] = useState(1);
   const [done, setDone] = useState(false);
+  const [episodeImage, setEpisodeImage] = useState("");
+  const [episodeName, setEpisodeName] = useState("");
 
   useEffect(() => {
     const fetchShow = async () => {
@@ -66,17 +68,19 @@ const ShowPage = () => {
         });
         const data = await res.json();
         if (data == null) {
-          // default parameters
           setwatchList(false);
           setEpisodeProgress(1);
           setSeasonProgress(1);
           setDone(false);
+          fetchEpisodeInfo(1, 1);
         } else {
-          console.log(data.done);
+          const season = parseInt(data.season, 10);
+          const episode = parseInt(data.episode, 10);
           setwatchList(data.watchList);
-          setEpisodeProgress(parseInt(data.episode), 10);
-          setSeasonProgress(parseInt(data.season), 10);
+          setEpisodeProgress(episode);
+          setSeasonProgress(season);
           setDone(data.done);
+          fetchEpisodeInfo(season, episode);
         }
       } catch (error) {
         console.error("Failed to check watchlist status", error);
@@ -91,6 +95,32 @@ const ShowPage = () => {
     }
   }, [id, type, navigate]);
 
+
+  const fetchEpisodeInfo = async (season = seasonProgress, episode = episodeProgress) => {
+    if (type != "tv") { return; }
+
+    const url = new URL("https://api.themoviedb.org/3/tv/" + id + "/season/" + season + "/episode/" + episode);
+
+    try {
+      const response = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + import.meta.env.VITE_APP_TMDB_API_TOKEN,
+          Accept: "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      };
+      const data = await response.json();
+
+      setEpisodeImage(data.still_path);
+      setEpisodeName(data.name);
+      console.log(episodeImage);
+    } catch (error) {
+      console.error("Fetch episode error: ", error)
+    };
+  }
   const toggleWatchlist = async () => {
     const newWatchList = !watchList;
     setwatchList(newWatchList);
@@ -140,10 +170,12 @@ const ShowPage = () => {
     setSeasonProgress(newSeason);
     setEpisodeProgress(newEpisode);
     await updateShowUsersList(newEpisode, newSeason, watchList);
+    return newSeason;
   };
 
   const changeEpisode = async (amount) => {
     var newEpisode = episodeProgress + amount;
+    var newSeason = seasonProgress;
     var newDone = false
     if (!results.seasons[seasonProgress]) { // only one season / no season
       newEpisode = Math.min(Math.max(1, episodeProgress + amount), results.number_of_episodes)
@@ -153,13 +185,18 @@ const ShowPage = () => {
     } else { // multiple seasons
       if (newEpisode < 1) {
         if (seasonProgress - 1 > 0) {
-          changeSeason(-1);
+          newSeason = changeSeason(-1);
           newEpisode = (results.seasons[seasonProgress - 1].episode_count);
         } else {
           newEpisode = episodeProgress;
         }
       } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
-        newEpisode = episodeProgress;
+        if (results.number_of_seasons >= seasonProgress + 1) {
+          newSeason = changeSeason(1);
+          newEpisode = 1;
+        } else {
+          newEpisode = episodeProgress;
+        }
       } else {
         newEpisode = episodeProgress + amount;
       }
@@ -170,7 +207,8 @@ const ShowPage = () => {
 
     setDone(newDone);
     setEpisodeProgress(newEpisode);
-    await updateShowUsersList(newEpisode, seasonProgress, watchList, newDone);
+    fetchEpisodeInfo(newSeason, newEpisode);
+    await updateShowUsersList(newEpisode, newSeason, watchList, newDone);
   };
 
   const toggleDone = async () => {
@@ -219,22 +257,27 @@ const ShowPage = () => {
                     <button onClick={() => changeEpisode(1)}>+</button>
                   </div>
 
+                  <div class="episode-card">
+                    <img src={`https://image.tmdb.org/t/p/w500${episodeImage}`} alt="Episode Thumbnail" class="episode-img" />
+                    <div class="episode-title">{episodeName}</div>
+                  </div>
+
                   {done && (<>
-                    <div className="done">
+                    <button className="done">
                       Watched it all !
-                    </div>
+                    </button>
                   </>)}
                 </>)}
 
                 {type == "movie" && (<>
                   {done && (
                     <button className="done" onClick={() => toggleDone()}>
-                    Watched
+                      Watched
                     </button>
                   )}
                   {!done && (
                     <button onClick={() => toggleDone()}>
-                    Not Watched
+                      Not Watched
                     </button>
                   )}
                 </>)}
@@ -242,7 +285,7 @@ const ShowPage = () => {
                 <button onClick={toggleWatchlist} className="watchlist-btn">
                   {watchList ? "Remove from Watchlist" : "Add to Watchlist"}
                 </button>
-                
+
               </div>
             </div>
           </>
