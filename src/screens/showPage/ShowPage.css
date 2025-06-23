@@ -5,7 +5,7 @@
   background-color: var(--light-grey);
   border-radius: 12px;
   box-shadow: 0 4px 12px var(--dark-blue);
-  color: white;
+  color: var(--text-light);
   max-width: 900px;
   margin: 2rem auto;
   font-family: sans-serif;
@@ -46,7 +46,7 @@
 
 .providers li {
   background-color: var(--blue);
-  color: white;
+  color: var(--text-light);
   padding: 0.3rem 0.6rem;
   border-radius: 5px;
   font-size: 0.85rem;
@@ -64,7 +64,7 @@
 .watchlist-btn {
   padding: 0.5rem 1rem;
   background-color: var(--blue);
-  color: white;
+  color: var(--text-light);
   border: none;
   border-radius: 6px;
   cursor: pointer;

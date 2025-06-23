@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #121212;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,7 +19,16 @@
   --text-light: #eee;
   --text-muted: #aaa;
   --red: rgb(136, 6, 6);
+}
 
+[data-theme="light"] {
+  --bg-color: #e0e0e0;
+  --dark-grey: #c7c4c4;
+  --light-grey: #929292;
+  color: black;
+  --text-light: #1d1d1d;
+  --text-muted: #353535;
+  background-color: #e0e0e0;
 }
 
 a {
@@ -54,7 +63,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--blue);
 }
 button:focus,
 button:focus-visible {
