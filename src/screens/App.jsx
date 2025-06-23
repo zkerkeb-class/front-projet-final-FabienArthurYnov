@@ -6,6 +6,7 @@ import Home from "./home/Home.jsx";
 import ProtectedRoute from "../security/Protected.jsx";
 import AnonRoute from "../security/Anon.jsx";
 import ShowPage from "./showPage/ShowPage.jsx";
+import WatchlistShows from "./watchlistShows/watchlistShows.jsx";
 import WatchedShows from "./watchedShows/watchedShows.jsx";
 
 function App() {
@@ -32,6 +33,10 @@ function App() {
         <Route path="/watched" element={
           <ProtectedRoute>
             <WatchedShows />
+          </ProtectedRoute>} />
+        <Route path="/watchlist" element={
+          <ProtectedRoute>
+            <WatchlistShows />
           </ProtectedRoute>} />
       </Routes>
     </BrowserRouter>

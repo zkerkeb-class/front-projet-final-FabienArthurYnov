@@ -11,8 +11,8 @@ const Navbar = () => {
             <div className="logo" onClick={() => navigate("/")}>SeenIt</div>
             <SearchBar></SearchBar>
             <div className="nav-links">
-                <button className="nav-btn">Watchlist</button>
-                <button className="nav-btn" onClick={() => navigate("/watched")}>Watched</button>
+                <button className="nav-btn" onClick={() => navigate("/watchlist")}>Watchlist</button>
+                <button className="nav-btn" onClick={() => navigate("/watched")}>Rewatch</button>
                 <button className="nav-btn logout-btn" onClick={() => navigate("/logout")}>Logout</button>
             </div>
         </nav>

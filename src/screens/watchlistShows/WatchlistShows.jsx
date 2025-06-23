@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import "./WatchedShows.css";
+import "./watchlistShows.css";
 import { useNavigate } from "react-router";
 import ShowCard from "../../component/ShowCard/ShowCard";
 import Navbar from "../../component/Navbar/Navbar"
 
-function WatchedShows() {
+function WatchlistShows() {
     // placeholder arrays to simulate data
-    const [watchedList, setWatcedList] = useState();
+    const [watchList, setWatchlist] = useState();
     const navigate = useNavigate();
 
 
     useEffect(() => {
-        const fetchWatchedlist = async () => {
+        const fetchWatchlist = async () => {
             const sessionToken = sessionStorage.getItem("loginToken");
 
             try {
-                const res = await fetch(import.meta.env.VITE_SEENIT_API + "/api/watched", {
+                const res = await fetch(import.meta.env.VITE_SEENIT_API + "/api/watchlist", {
                     method: "GET",
                     headers: {
                         Authorization: "Bearer " + sessionToken,
@@ -25,13 +25,13 @@ function WatchedShows() {
                 if (!res.ok) throw new Error("Failed to fetch watchlist");
 
                 const data = await res.json();
-                setWatcedList(data);
+                setWatchlist(data);
             } catch (err) {
-                console.error("Watchedlist fetch error:", err);
+                console.error("watchlist fetch error:", err);
             }
         };
 
-        fetchWatchedlist();
+        fetchWatchlist();
     })
 
 
@@ -44,12 +44,12 @@ function WatchedShows() {
             <main className="main-content">
 
                 <section className="section">
-                    <h2>Rewatch</h2>
+                    <h2>Your Watchlist</h2>
                     <div className="card-grid">
-                        {!watchedList || watchedList.length == 0 && (<>
-                        <p>Nothing watched yet ! Look at Discover, or continue what you started !</p>
+                        {!watchList || watchList.length == 0 && (<>
+                        <p>Nothing in watchlist yet ! Look at Discover, or continue what you started !</p>
                         </>)}
-                        {watchedList && watchedList.map((item, i) => (
+                        {watchList && watchList.map((item, i) => (
                             <ShowCard
                                 key={item._id}
                                 poster={`https://image.tmdb.org/t/p/w500${item.show.poster_link}`}
@@ -70,4 +70,4 @@ function WatchedShows() {
     );
 }
 
-export default WatchedShows;
+export default WatchlistShows;
