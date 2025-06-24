@@ -185,14 +185,14 @@ const ShowPage = () => {
     } else { // multiple seasons
       if (newEpisode < 1) {
         if (seasonProgress - 1 > 0) {
-          newSeason = changeSeason(-1);
+          newSeason = await changeSeason(-1);
           newEpisode = (results.seasons[seasonProgress - 1].episode_count);
         } else {
           newEpisode = episodeProgress;
         }
       } else if (newEpisode > results.seasons[seasonProgress].episode_count) {
         if (results.number_of_seasons >= seasonProgress + 1) {
-          newSeason = changeSeason(1);
+          newSeason = await changeSeason(1);
           newEpisode = 1;
         } else {
           newEpisode = episodeProgress;
@@ -200,14 +200,15 @@ const ShowPage = () => {
       } else {
         newEpisode = episodeProgress + amount;
       }
-      if (seasonProgress == results.number_of_seasons && newEpisode == results.seasons[seasonProgress].episode_count) {
+      if (newSeason == results.number_of_seasons && newEpisode == results.seasons[seasonProgress].episode_count) {
         newDone = true;
       }
     }
 
     setDone(newDone);
     setEpisodeProgress(newEpisode);
-    fetchEpisodeInfo(newSeason, newEpisode);
+    console.log("here: ", newSeason, newEpisode);
+    await fetchEpisodeInfo(newSeason, newEpisode);
     await updateShowUsersList(newEpisode, newSeason, watchList, newDone);
   };
 
@@ -248,7 +249,7 @@ const ShowPage = () => {
                 {type == "tv" && (<>
                   {results.seasons[seasonProgress] && (<>
                     <div className="season-progress">
-                      <span>{results.seasons[seasonProgress].name}</span>
+                      <span>{results.seasons[seasonProgress].name} / {results.number_of_seasons}</span>
                     </div>
                   </>)}
                   <div className="episode-progress">
