@@ -10,6 +10,7 @@ function Home() {
     const [startedList, setStartedList] = useState();
     const [discoverList, setDiscoverList] = useState();
     const navigate = useNavigate();
+    const [username, setUsername] = useState("");
 
 
     useEffect(() => {
@@ -85,10 +86,32 @@ function Home() {
                 console.error("Error fetching TV shows:", error);
             }
         }
+
+        const fetchUsername = async () => {
+            const sessionToken = sessionStorage.getItem("loginToken");
+
+            try {
+                const res = await fetch(import.meta.env.VITE_SEENIT_API + "/api/user", {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + sessionToken,
+                    },
+                });
+
+                if (!res.ok) throw new Error("Failed to fetch user");
+
+                const data = await res.json();
+                setUsername(data.pseudo);
+                console.log(data);
+            } catch (err) {
+                console.error("User fetch error:", err);
+            }
+        }
         fetchWatchlist();
         fetchStartedList();
         fetchDiscoverList();
-    })
+        fetchUsername();
+    }, [])
 
 
     return (
@@ -98,6 +121,8 @@ function Home() {
             </Navbar>
 
             <main className="main-content">
+
+                <h2 className="welcome">Welcome {username}</h2>
 
                 <section className="section">
                     <h2>Your Watchlist</h2>

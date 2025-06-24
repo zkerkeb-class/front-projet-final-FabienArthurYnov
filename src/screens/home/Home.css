@@ -58,6 +58,11 @@ body, html, #root {
   background: transparent;
 }
 
+.welcome {
+  margin-bottom: 50px;
+  font-size: 28px;
+}
+
 
 
 @media (max-width: 600px) {

@@ -257,9 +257,9 @@ const ShowPage = () => {
                     <button onClick={() => changeEpisode(1)}>+</button>
                   </div>
 
-                  <div class="episode-card">
+                  <div className="episode-card">
                     <img src={`https://image.tmdb.org/t/p/w500${episodeImage}`} alt="Episode Thumbnail" class="episode-img" />
-                    <div class="episode-title">{episodeName}</div>
+                    <div className="episode-title">{episodeName}</div>
                   </div>
 
                   {done && (<>

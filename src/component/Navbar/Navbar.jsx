@@ -26,7 +26,7 @@ const Navbar = () => {
             <div className="nav-links">
                 <button className="nav-btn" onClick={() => navigate("/watchlist")}>Watchlist</button>
                 <button className="nav-btn" onClick={() => navigate("/watched")}>Rewatch</button>
-                <spacer></spacer>
+                <span></span>
                 <button className="nav-btn" onClick={toggleTheme}>
                     {theme === "dark" ? "Light" : "Dark"}
                 </button>
