@@ -102,7 +102,6 @@ function Home() {
 
                 const data = await res.json();
                 setUsername(data.pseudo);
-                console.log(data);
             } catch (err) {
                 console.error("User fetch error:", err);
             }

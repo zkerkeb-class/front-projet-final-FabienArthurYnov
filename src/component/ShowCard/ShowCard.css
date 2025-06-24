@@ -69,4 +69,13 @@
     height: 400px;
     font-size: 0.8rem;
   }
+  .card-name {
+    font-size: 1.4rem;
+  }
+  .card-info-bottom {
+    font-size: 1.5rem;
+  }
+  .card-year {
+    font-size: 1rem;
+  }
 }

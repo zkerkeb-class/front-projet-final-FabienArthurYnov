@@ -116,7 +116,6 @@ const ShowPage = () => {
 
       setEpisodeImage(data.still_path);
       setEpisodeName(data.name);
-      console.log(episodeImage);
     } catch (error) {
       console.error("Fetch episode error: ", error)
     };
@@ -207,7 +206,6 @@ const ShowPage = () => {
 
     setDone(newDone);
     setEpisodeProgress(newEpisode);
-    console.log("here: ", newSeason, newEpisode);
     await fetchEpisodeInfo(newSeason, newEpisode);
     await updateShowUsersList(newEpisode, newSeason, watchList, newDone);
   };
