@@ -6,7 +6,7 @@
   background-size: cover;
   background-position: center;
   border-radius: 8px;
-  box-shadow: 0 4px 8px var(--dark-blue);
+  box-shadow: 0 4px 8px var(--dark-blue-transparent);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -23,8 +23,8 @@
 }
 
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px var(--dark-blue);
+  transform: scale(1.01);
+  box-shadow: 0 8px 16px var(--blue-transparent);
 }
 
 .card-info-top {
@@ -59,6 +59,14 @@
     min-width: 120px;
     max-width: 120px;
     height: 180px;
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 1200px) {
+  .card {
+    min-width: 250px;
+    max-width: 250px;
+    height: 400px;
     font-size: 0.8rem;
   }
 }
