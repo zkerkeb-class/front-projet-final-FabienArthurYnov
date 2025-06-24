@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./Navbar.css"; // Assuming CSS is in Card.css
+import "./Navbar.css";
 import SearchBar from "./Searchbar/Searchbar";
 import { useNavigate } from "react-router";
+import { SunIcon, MoonIcon } from "../Icons.jsx"
 
 
 const Navbar = () => {
@@ -28,7 +29,9 @@ const Navbar = () => {
                 <button className="nav-btn" onClick={() => navigate("/watched")}>Rewatch</button>
                 <span></span>
                 <button className="nav-btn" onClick={toggleTheme}>
-                    {theme === "dark" ? "Light" : "Dark"}
+                    {theme === "dark" ?
+                        <MoonIcon />
+                        : <SunIcon />}
                 </button>
                 <button className="nav-btn logout-btn" onClick={() => navigate("/logout")}>Logout</button>
             </div>
