@@ -51,3 +51,12 @@ input {
 .search-results li:hover {
     background-color: var(--blue);
 }
+
+@media (max-width: 600px) {
+  .search-bar {
+    padding: 0 0rem;
+  }
+  .search-bar input {
+    width: 50vw;
+  }
+}

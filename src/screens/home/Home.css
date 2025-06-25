@@ -63,10 +63,3 @@ body, html, #root {
   font-size: 28px;
 }
 
-
-
-@media (max-width: 600px) {
-  .search-bar {
-    max-width: 150px;
-  }
-}

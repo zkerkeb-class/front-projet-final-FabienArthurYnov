@@ -58,11 +58,3 @@ body, html, #root {
 .card-row::-webkit-scrollbar-track {
   background: transparent;
 }
-
-
-
-@media (max-width: 600px) {
-  .search-bar {
-    max-width: 150px;
-  }
-}
